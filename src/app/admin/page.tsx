@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { DollarSign, ShoppingCart, Package, TrendingUp } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";

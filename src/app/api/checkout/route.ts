@@ -5,6 +5,14 @@ import type { Product, Bundle } from "@/types";
 
 export async function POST(request: Request) {
   try {
+    if (!stripe) {
+      console.error("Stripe not configured - missing STRIPE_SECRET_KEY");
+      return NextResponse.json(
+        { error: "Payment system not configured" },
+        { status: 503 }
+      );
+    }
+
     const { productId, bundleId } = await request.json();
 
     if (!productId && !bundleId) {

@@ -7,6 +7,14 @@ import { sendPurchaseEmail } from "@/lib/email";
 import { generateToken } from "@/lib/utils";
 
 export async function POST(request: Request) {
+  if (!stripe) {
+    console.error("Stripe not configured - missing STRIPE_SECRET_KEY");
+    return NextResponse.json(
+      { error: "Payment system not configured" },
+      { status: 503 }
+    );
+  }
+
   const body = await request.text();
   const headersList = await headers();
   const signature = headersList.get("stripe-signature");

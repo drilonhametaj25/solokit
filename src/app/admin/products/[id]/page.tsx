@@ -2,25 +2,34 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Plus, X } from "lucide-react";
+import { ArrowLeft, Save, Plus, X, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { CATEGORIES } from "@/lib/utils";
+import { updateProduct, deleteProduct, uploadProductImage } from "../actions";
 import { ImageUploader } from "@/components/admin/ImageUploader";
-import { slugify, CATEGORIES } from "@/lib/utils";
-import { createProduct, uploadProductImage } from "../actions";
+import { createClient } from "@/lib/supabase/client";
+import type { Product } from "@/types";
 
 const categoryOptions = Object.entries(CATEGORIES).map(([value, label]) => ({
   value,
   label,
 }));
 
-export default function NewProductPage() {
+interface EditProductPageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default function EditProductPage({ params }: EditProductPageProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isDeleting, setIsDeleting] = React.useState(false);
   const [error, setError] = React.useState("");
+  const [product, setProduct] = React.useState<Product | null>(null);
+  const [isLoadingProduct, setIsLoadingProduct] = React.useState(true);
 
   // Form state
   const [name, setName] = React.useState("");
@@ -40,12 +49,50 @@ export default function NewProductPage() {
   const [isFeatured, setIsFeatured] = React.useState(false);
   const [isPublished, setIsPublished] = React.useState(false);
 
-  // Auto-generate slug from name
+  // Load product data
   React.useEffect(() => {
-    if (name && !slug) {
-      setSlug(slugify(name));
+    async function loadProduct() {
+      const { id } = await params;
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error || !data) {
+        setError("Product not found");
+        setIsLoadingProduct(false);
+        return;
+      }
+
+      const productData = data as Product;
+      setProduct(productData);
+
+      // Populate form
+      setName(productData.name);
+      setSlug(productData.slug);
+      setTagline(productData.tagline || "");
+      setDescription(productData.description);
+      setPrice(productData.price.toString());
+      setCompareAtPrice(productData.compare_at_price?.toString() || "");
+      setCategory(productData.category);
+      setFeatures(productData.features?.length ? productData.features : [""]);
+      setTags(productData.tags?.join(", ") || "");
+      setFileUrl(productData.file_url);
+      setFileName(productData.file_name || "");
+      setImages(productData.images || []);
+      setSeoTitle(productData.seo_title || "");
+      setSeoDescription(productData.seo_description || "");
+      setIsFeatured(productData.is_featured);
+      setIsPublished(productData.is_published);
+
+      setIsLoadingProduct(false);
     }
-  }, [name, slug]);
+
+    loadProduct();
+  }, [params]);
 
   const addFeature = () => {
     setFeatures([...features, ""]);
@@ -69,6 +116,8 @@ export default function NewProductPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!product) return;
+
     setError("");
     setIsLoading(true);
 
@@ -91,7 +140,7 @@ export default function NewProductPage() {
       is_published: isPublished,
     };
 
-    const result = await createProduct(productData);
+    const result = await updateProduct(product.id, productData);
 
     if (result.error) {
       setError(result.error);
@@ -102,23 +151,68 @@ export default function NewProductPage() {
     router.push("/admin/products");
   }
 
+  async function handleDelete() {
+    if (!product) return;
+    if (!confirm("Are you sure you want to delete this product?")) return;
+
+    setIsDeleting(true);
+    const result = await deleteProduct(product.id);
+
+    if (result.error) {
+      setError(result.error);
+      setIsDeleting(false);
+      return;
+    }
+
+    router.push("/admin/products");
+  }
+
+  if (isLoadingProduct) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-muted-foreground">Loading product...</div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 gap-4">
+        <p className="text-destructive">{error || "Product not found"}</p>
+        <Link href="/admin/products">
+          <Button variant="outline">Back to Products</Button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Link href="/admin/products">
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </Link>
-        <div>
-          <h1 className="font-heading text-3xl font-bold text-foreground">
-            New Product
-          </h1>
-          <p className="mt-1 text-muted-foreground">
-            Create a new digital template
-          </p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link href="/admin/products">
+            <Button variant="ghost" size="icon">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <div>
+            <h1 className="font-heading text-3xl font-bold text-foreground">
+              Edit Product
+            </h1>
+            <p className="mt-1 text-muted-foreground">
+              Update {product.name}
+            </p>
+          </div>
         </div>
+        <Button
+          variant="destructive"
+          onClick={handleDelete}
+          disabled={isDeleting}
+        >
+          <Trash2 className="mr-2 h-4 w-4" />
+          {isDeleting ? "Deleting..." : "Delete"}
+        </Button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -336,6 +430,25 @@ export default function NewProductPage() {
               </CardContent>
             </Card>
 
+            {/* Stats (read-only) */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Stats</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Sales</span>
+                  <span className="font-medium">{product.sales_count}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Created</span>
+                  <span className="font-medium">
+                    {new Date(product.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Actions */}
             <Card>
               <CardContent className="pt-6">
@@ -344,7 +457,7 @@ export default function NewProductPage() {
                 )}
                 <Button type="submit" className="w-full" isLoading={isLoading}>
                   <Save className="mr-2 h-4 w-4" />
-                  Save Product
+                  Save Changes
                 </Button>
               </CardContent>
             </Card>
