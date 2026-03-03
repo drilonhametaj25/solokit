@@ -6,7 +6,7 @@ export const resend = resendApiKey
   ? new Resend(resendApiKey)
   : (null as unknown as Resend); // Type assertion for build-time
 
-export const EMAIL_FROM = process.env.EMAIL_FROM || "SoloKit <noreply@solokit.co>";
+export const EMAIL_FROM = process.env.EMAIL_FROM || "SoloKit <onboarding@resend.dev>";
 
 interface SendPurchaseEmailParams {
   to: string;
