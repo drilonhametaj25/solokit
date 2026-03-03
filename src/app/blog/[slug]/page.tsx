@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -143,7 +145,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
             <div className="mt-12 flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
+              {post.tags.map((tag: string) => (
                 <Badge key={tag} variant="outline">
                   {tag}
                 </Badge>

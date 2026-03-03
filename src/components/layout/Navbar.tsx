@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/Logo";
 import { MobileMenu } from "./MobileMenu";
 
 const navLinks = [
@@ -40,11 +41,8 @@ export function Navbar() {
       >
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-heading text-xl font-bold text-primary transition-colors hover:text-primary/80"
-          >
-            SoloKit
+          <Link href="/" className="transition-opacity hover:opacity-80">
+            <Logo size="md" />
           </Link>
 
           {/* Desktop Navigation */}

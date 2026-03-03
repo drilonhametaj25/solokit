@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/Logo";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -50,9 +51,7 @@ export function MobileMenu({
       {/* Menu Panel */}
       <div className="fixed right-0 top-0 h-full w-full max-w-xs border-l border-border bg-card animate-slide-in">
         <div className="flex h-16 items-center justify-between px-4">
-          <span className="font-heading text-lg font-bold text-primary">
-            SoloKit
-          </span>
+          <Logo size="sm" />
           <Button
             variant="ghost"
             size="icon"

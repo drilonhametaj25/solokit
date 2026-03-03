@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Mail, Twitter, Github, Linkedin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/Logo";
 
 const footerLinks = {
   product: [
@@ -33,11 +34,8 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           {/* Brand & Newsletter */}
           <div className="lg:col-span-1">
-            <Link
-              href="/"
-              className="font-heading text-xl font-bold text-primary"
-            >
-              SoloKit
+            <Link href="/" className="inline-block">
+              <Logo size="md" />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
               Premium templates for freelancers and solopreneurs. Run your
