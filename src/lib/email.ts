@@ -1,12 +1,17 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-// Create Resend instance only if API key is available (skip during build)
-const resendApiKey = process.env.RESEND_API_KEY;
-export const resend = resendApiKey
-  ? new Resend(resendApiKey)
-  : (null as unknown as Resend); // Type assertion for build-time
+// Create SMTP transporter
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT) || 465,
+  secure: true, // true for 465, false for 587
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
-export const EMAIL_FROM = process.env.EMAIL_FROM || "SoloKit <onboarding@resend.dev>";
+export const EMAIL_FROM = process.env.EMAIL_FROM || "SoloKit <info@drilonhametaj.it>";
 
 interface SendPurchaseEmailParams {
   to: string;
@@ -30,9 +35,9 @@ export async function sendPurchaseEmail({
     currency: currency.toUpperCase(),
   }).format(orderAmount);
 
-  const { data, error } = await resend.emails.send({
+  const info = await transporter.sendMail({
     from: EMAIL_FROM,
-    to: [to],
+    to: to,
     subject: `Your SoloKit Purchase: ${productName}`,
     html: `
       <!DOCTYPE html>
@@ -80,10 +85,5 @@ export async function sendPurchaseEmail({
     `,
   });
 
-  if (error) {
-    console.error("Failed to send purchase email:", error);
-    throw error;
-  }
-
-  return data;
+  return { id: info.messageId };
 }
