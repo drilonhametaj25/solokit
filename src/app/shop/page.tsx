@@ -8,6 +8,7 @@ import { ProductCard } from "@/components/products/ProductCard";
 import { ProductCardSkeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { CATEGORIES, getCategoryLabel } from "@/lib/utils";
+import { SortDropdown } from "@/components/shop/SortDropdown";
 import type { Category } from "@/types";
 
 export const metadata: Metadata = {
@@ -98,13 +99,6 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     label,
   }));
 
-  const sortOptions = [
-    { value: "newest", label: "Newest" },
-    { value: "popular", label: "Most Popular" },
-    { value: "price_asc", label: "Price: Low to High" },
-    { value: "price_desc", label: "Price: High to Low" },
-  ];
-
   return (
     <>
       <Navbar />
@@ -146,21 +140,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
 
             {/* Sort Dropdown */}
             <div className="ml-auto">
-              <select
-                defaultValue={sort || "newest"}
-                onChange={(e) => {
-                  const url = new URL(window.location.href);
-                  url.searchParams.set("sort", e.target.value);
-                  window.location.href = url.toString();
-                }}
-                className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
-              >
-                {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+              <SortDropdown currentSort={sort || "newest"} />
             </div>
           </div>
 
