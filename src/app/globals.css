@@ -2,26 +2,113 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark theme - default (premium, Linear/Raycast inspired) */
+    --background: 240 10% 4%;           /* #0a0a0f */
+    --foreground: 0 0% 98%;             /* #fafafa */
+
+    --card: 240 6% 7%;                  /* #111118 */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 6% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 172 47% 54%;             /* #53C0B4 - teal accent */
+    --primary-foreground: 240 10% 4%;
+
+    --secondary: 240 5% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 5% 15%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 240 5% 15%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 145 63% 49%;             /* #2ECC71 - green */
+    --success-foreground: 240 10% 4%;
+
+    --border: 240 5% 18%;
+    --input: 240 5% 18%;
+    --ring: 172 47% 54%;
+
+    --radius: 0.75rem;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-success bg-clip-text text-transparent;
+  }
+
+  .glass {
+    @apply backdrop-blur-xl bg-card/80;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden bg-muted;
+  }
+
+  .skeleton::after {
+    @apply absolute inset-0 -translate-x-full;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--muted-foreground) / 0.1),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+    content: "";
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Focus styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+}
+
+/* Selection */
+::selection {
+  @apply bg-primary/30;
 }
