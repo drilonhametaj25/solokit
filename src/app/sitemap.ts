@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { MetadataRoute } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { CATEGORIES } from "@/lib/utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_URL || "https://solokit.co";
@@ -46,6 +47,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const categoryUrls: MetadataRoute.Sitemap = Object.keys(CATEGORIES).map((category) => ({
+    url: `${baseUrl}/blog/category/${category}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
   return [
     {
       url: baseUrl,
@@ -72,6 +80,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
       url: `${baseUrl}/legal/privacy`,
       lastModified: new Date(),
       changeFrequency: "yearly",
@@ -89,6 +109,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    ...categoryUrls,
     ...productUrls,
     ...bundleUrls,
     ...postUrls,

@@ -108,10 +108,10 @@ export default async function CheckoutSuccessPage({
             <p className="mt-8 text-sm text-muted-foreground">
               Having trouble? Contact us at{" "}
               <a
-                href="mailto:support@solokit.co"
+                href="mailto:info@drilonhametaj.it"
                 className="text-primary hover:underline"
               >
-                support@solokit.co
+                info@drilonhametaj.it
               </a>
             </p>
           </Card>

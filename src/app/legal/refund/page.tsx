@@ -3,7 +3,7 @@ import { Navbar, Footer } from "@/components/layout";
 
 export const metadata: Metadata = {
   title: "Refund Policy",
-  description: "Refund policy for SoloKit - our 30-day money-back guarantee and refund process.",
+  description: "Refund policy for SoloKit — our 14-day refund policy in compliance with EU consumer protection standards.",
 };
 
 export default function RefundPage() {
@@ -20,9 +20,9 @@ export default function RefundPage() {
           </p>
 
           <div className="prose prose-invert mt-8 max-w-none">
-            <h2>30-Day Money-Back Guarantee</h2>
+            <h2>14-Day Refund Policy</h2>
             <p>
-              {"We want you to be completely satisfied with your purchase. If you're not happy with a product for any reason, we offer a full refund within 30 days of purchase—no questions asked."}
+              {"We want you to be completely satisfied with your purchase. In accordance with EU consumer protection standards (Directive 2011/83/EU), we offer a full refund within 14 days of purchase — no questions asked."}
             </p>
 
             <h2>How to Request a Refund</h2>
@@ -30,7 +30,7 @@ export default function RefundPage() {
             <ol>
               <li>
                 Email us at{" "}
-                <a href="mailto:support@solokit.co">support@solokit.co</a>
+                <a href="mailto:info@drilonhametaj.it">info@drilonhametaj.it</a>
               </li>
               <li>Include your order number or the email used for purchase</li>
               <li>{"Let us know which product you'd like refunded"}</li>
@@ -42,16 +42,16 @@ export default function RefundPage() {
             </p>
 
             <h2>Eligibility</h2>
-            <p>All purchases are eligible for a refund within 30 days, including:</p>
+            <p>All purchases are eligible for a refund within 14 days, including:</p>
             <ul>
               <li>Individual templates</li>
               <li>Template bundles</li>
               <li>Any digital product sold on SoloKit</li>
             </ul>
 
-            <h2>After 30 Days</h2>
+            <h2>After 14 Days</h2>
             <p>
-              {"Refunds requested after 30 days will be reviewed on a case-by-case basis. While we cannot guarantee a refund after this period, we're committed to finding a solution that works for you."}
+              {"Refund requests made after 14 days will be reviewed on a case-by-case basis. While we cannot guarantee a refund after this period, we will consider refunds for products that are defective or not as described."}
             </p>
 
             <h2>Exceptions</h2>
@@ -63,7 +63,7 @@ export default function RefundPage() {
             <h2>Questions?</h2>
             <p>
               {"If you have any questions about our refund policy, please don't hesitate to contact us at "}
-              <a href="mailto:support@solokit.co">support@solokit.co</a>
+              <a href="mailto:info@drilonhametaj.it">info@drilonhametaj.it</a>
               {". We're here to help!"}
             </p>
           </div>

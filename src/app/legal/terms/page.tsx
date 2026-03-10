@@ -62,7 +62,11 @@ export default function TermsPage() {
 
             <h2>6. Refund Policy</h2>
             <p>
-              {"We offer a 30-day money-back guarantee. If you're not satisfied with your purchase, contact us within 30 days for a full refund. See our Refund Policy for more details."}
+              {"We offer a 14-day refund policy in accordance with EU consumer protection standards. If you're not satisfied with your purchase, contact us at "}
+              <a href="mailto:info@drilonhametaj.it">info@drilonhametaj.it</a>
+              {" within 14 days for a full refund. See our "}
+              <a href="/legal/refund">Refund Policy</a>
+              {" for more details."}
             </p>
 
             <h2>7. Intellectual Property</h2>
@@ -86,7 +90,7 @@ export default function TermsPage() {
             <h2>10. Contact</h2>
             <p>
               For questions about these terms, please contact us at{" "}
-              <a href="mailto:legal@solokit.co">legal@solokit.co</a>.
+              <a href="mailto:info@drilonhametaj.it">info@drilonhametaj.it</a>.
             </p>
           </div>
         </article>
