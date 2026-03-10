@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "What if the template doesn't work for me?",
     answer:
-      "We offer a 30-day money-back guarantee. If you're not satisfied with your purchase, just reach out and we'll process a full refund, no questions asked.",
+      "We offer a 14-day refund policy in line with EU consumer standards. If you're not satisfied with your purchase, just reach out and we'll process a full refund.",
   },
   {
     question: "Do you offer support?",
